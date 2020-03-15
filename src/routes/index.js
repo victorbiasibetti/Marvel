@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Route} from 'react-router-dom'
 
-import App from '../pages/App'
-import Char from '../pages/Char'
+import App from '../pages/app'
+import Char from '../pages/char'
 
 export default function Routes() {
   return (

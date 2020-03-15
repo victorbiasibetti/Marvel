@@ -103,11 +103,6 @@ function App() {
           )
         : (<h1>Não há herois disponíveis</h1>)
       }
-
-      <footer>
-        
-        <h2>footer</h2>
-      </footer>
     </Container>
   );
 }
