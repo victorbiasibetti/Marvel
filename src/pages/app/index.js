@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import md5 from 'md5'
+import {  ArrowBackIos, ArrowForwardIos } from '@material-ui/icons';
 
 import { Container } from './styles';
 
@@ -29,8 +30,7 @@ function App() {
         params: {
           ts: timestamp,
           apikey: MARVEL_PUBLIC_KEY,
-          hash: strmd5,
-          offset
+          hash: strmd5
 
         }        
       })
@@ -44,12 +44,10 @@ function App() {
     }
 
     loadCharacters()
-  }, [offset])
+  }, [])
 
 
   async function findHero(){
-    
-    console.log(search.value)
     const timestamp = new Date().getMilliseconds();
       const strmd5 = md5(timestamp + MARVEL_PRIVATE_KEY + MARVEL_PUBLIC_KEY)
       
@@ -67,26 +65,63 @@ function App() {
       setLimit(chars.limit)
       setTotal(chars.total)
       setCharacters(chars.results)
+  }
+
+  async function changePage(direction){
+    let newOffset = 0;
+    if(direction === 'prev'){
+      if(offset > 20)
+        newOffset =  offset - 20
+    }else if(direction === 'next'){
+      if((offset + 20) < total)
+        newOffset = offset + 20
+    }
+
+    console.log(direction)
+    console.log(offset)
+    const timestamp = new Date().getMilliseconds();
+    const strmd5 = md5(timestamp + MARVEL_PRIVATE_KEY + MARVEL_PUBLIC_KEY)
+    
+    const response = await api.get(`/v1/public/characters`,{
+      params: {
+        ts: timestamp,
+        apikey: MARVEL_PUBLIC_KEY,
+        hash: strmd5,
+        offset: newOffset
+
+      }        
+    })
+
+    const chars = response.data.data
+    console.log(chars)
+    setCount(chars.count)
+    setLimit(chars.limit)
+    setTotal(chars.total)
+    setOffset(chars.offset)
+    setCharacters(chars.results)
 
   }
 
   return (
     <Container>
       <header>
-        <div class="Busca">
+        <div>
           <input type="text" ref={input => setSearch(input)} defaultValue='' 
           placeholder="     Busque seu herói aqui"/>
           <button type="button" onClick={() => findHero()}>Buscar</button>
         </div>
 
-        <div>
-
-          <p>Offset: {offset}</p>
-          <p>Limit: {limit}</p>
-          <p>Count: {count}</p>
-          <p>Total: {total}</p>
-        </div>
-
+      <aside>
+        
+          <div onClick={() => changePage('prev')}>
+            <ArrowBackIos /><span>Prev</span>
+          </div>
+            <p>{offset} de {total}</p>
+          <div onClick={() => changePage('next')}>
+            <span>Next</span><ArrowForwardIos/>
+          </div>        
+        
+        </aside>
       </header>
       {
         characters.length ? 

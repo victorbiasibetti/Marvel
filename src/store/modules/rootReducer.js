@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
 
-import char from './chars/reducer'
+import hero from './hero/reducer'
 
-export default combineReducers({char})
+export default combineReducers({hero})

@@ -11,6 +11,25 @@ export const Container = styled.div`
     grid-gap: 10px;
   }
 
+  aside {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    
+    div {
+      box-sizing: 0;
+      background: #069;
+      color: #fff;
+      border-radius: 10px;
+      padding: 5px;
+      font-weight: bold;
+      &:hover {
+          background: #069fff
+        }
+    }
+  }
+
   header {
     width: 100%;
     
